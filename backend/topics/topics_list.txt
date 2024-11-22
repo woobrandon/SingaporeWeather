@@ -1,0 +1,2 @@
+stock-prices-topic: Stores real-time stock price data.
+stock-alerts-topic: Publishes alerts when stock prices hit thresholds.

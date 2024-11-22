@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 17px;
+  background-color: rgba(255, 255, 255, 0.807);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  z-index: 50;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.headerButton {
+  padding: 8px;
+  color: black;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.headerButton:hover {
+  cursor: pointer;
+}
+
+.headerLogo {
+  height: 60px;
+  width: auto;
+  margin-left: 10px;
+}
+
+
+.appButton {
+  display: flex;
+  flex-direction: row;
+}
