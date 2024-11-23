@@ -3,17 +3,21 @@ import styles from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/weather_logo.png"
 
-const Header = () => {
+interface HeaderProps {
+    className?: string;
+}
+const Header: React.FC<HeaderProps> = ({ className }) => {
     const navigate = useNavigate();
     const headerItems = [
         { label: "Home", path: "/"},
+        { label: "Map", path: "/map"}
     ];
 
     const navigateTo = (path: string) => {
         navigate(path);
       };
     return (
-        <div>
+        <div className = {className}>
             <header className={styles.header}>
                 <img src = {logo} className = {styles.headerLogo} alt = "logo"/>
                 <div className = {styles.appButton}>

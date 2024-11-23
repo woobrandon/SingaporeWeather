@@ -1,0 +1,8 @@
+.background {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    margin-bottom: 30px;
+}

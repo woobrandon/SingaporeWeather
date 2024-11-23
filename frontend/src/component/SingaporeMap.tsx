@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { APIProvider, Map, MapCameraChangedEvent } from "@vis.gl/react-google-maps";
 
-console.log(process.env.REACT_APP_GOOGLE_MAP_API_KEY);
-
 const SingaporeMap: React.FC = () => {
   const [apiKey, setApiKey] = useState<string | undefined>(undefined);
 
