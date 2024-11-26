@@ -38,3 +38,15 @@
     top: 3%;
     left: 5%;
 }
+
+.WeatherCardsContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 50%;
+    left: 5%;
+}
+
+.WeatherCard {
+    border-radius: 10px;
+}

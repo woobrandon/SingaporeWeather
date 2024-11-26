@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 import json
-import station_stream_processing
+import temperature_stream_processing 
 
 TOPIC_NAME = "singapore_temperature"
 BOOTSTRAP_SERVERS = ["localhost:9092"]
@@ -17,11 +17,12 @@ def consume_message():
         )
 
         print(f"Connected to Kafka topic '{TOPIC_NAME}'. Waiting for messages...\n")
-
+        result = []
         for message in consumer:
             data = message.value
+            result.append(temperature_stream_processing.temperature_stream_processing(data))
             print(f"Recevied message: {data["readings"][0]["timestamp"]}")
-        return consumer
+        return result
     
     except Exception as e:
         print(f"Error in consuming messages: {e}")

@@ -1,11 +1,18 @@
 import React from "react";
+import styles from "./WeatherCard.module.css";
 
-const WeatherCard: React.FC = () => {
+interface WeatherCardProps {
+    className?: string;
+}
+
+const WeatherCard: React.FC<WeatherCardProps> = ({ className }) => {
 
     
     return (
-        <div>
-
+        <div className = {className}>
+            <div className = {styles.CardBackground}>
+                weather card
+            </div>
         </div>
     )
 }
