@@ -3,49 +3,12 @@ import styles from "./Home.module.css";
 import Singapore from "../assets/SingaporeHome.jpg";
 import axios from "axios";
 import { Header, WeatherCard } from '../component';
-
-interface TemperatureData {
-  id: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  temperature: number;
-}
-
-interface ForecastData {
-  day: string;
-  forecast_date: string;
-  temperature_low: number;
-  temperature_high: number;
-  humidity_low: number;
-  humidity_high: number;
-  forecast_summary: string;
-  wind_speed_low: number;
-  wind_speed_high: number;
-  wind_direction: string;
-}
+import { TemperatureData, ForecastData } from "../interacesAndTypes"
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [meanTemperature, setMeanTemperature] = useState<string | null>(null);
-  const [weatherForecast, setWeatherForecast] = useState<ForecastData | null>(null);
-
-  useEffect(() => {
-    const fetchTemperatureData = async () => {
-      setIsLoading(true)
-      try {
-        const response = await axios.get("http://localhost:5001/temperature");
-        console.log('Temperature Response:', response);
-        const responseData = response.data
-        console.log('Temperature Response data:', responseData);
-        setMeanTemperature((responseData.reduce((sum: number, value: TemperatureData) => sum + value.temperature, 0)/responseData.length).toFixed(1));
-      } catch (error) {
-        console.error("Error processing weather data:", error);
-      }
-      setIsLoading(false);
-    }
-    fetchTemperatureData();
-  }, [])
+  const [weatherForecast, setWeatherForecast] = useState<ForecastData[] | null>(null);
 
   useEffect(() => {
     const fetchForecastData = async () => {
@@ -55,7 +18,7 @@ const Home = () => {
         console.log('Weather Forecast Response:', response);
         const responseData = response.data
         console.log('Weather Forecast Response data:', responseData);
-        setWeatherForecast(responseData)
+        responseData ? setWeatherForecast(responseData) : setWeatherForecast(weatherForecast);
       } catch (error) {
         console.error("Error processing weather data:", error);
       }
@@ -63,6 +26,34 @@ const Home = () => {
     }
     fetchForecastData();
   }, [])
+
+  const fetchTemperatureData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get("http://localhost:5001/temperature");
+      console.log('Temperature Response:', response);
+      const responseData = response.data;
+      console.log('Temperature Response data:', responseData);
+
+      responseData ? setMeanTemperature(
+        (responseData.reduce((sum: number, value: TemperatureData) => sum + value.temperature, 0) / responseData.length).toFixed(1)
+      ) : setMeanTemperature(meanTemperature);
+    } catch (error) {
+      console.error("Error processing temperature data:", error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+
+    fetchTemperatureData();
+
+    const temperatureInterval = setInterval(() => {
+      fetchTemperatureData();
+    }, 60000);
+
+    return () => clearInterval(temperatureInterval);
+  }, []);
 
   
   return (
@@ -81,10 +72,13 @@ const Home = () => {
               </div>
             </div>
             <div className = {styles.WeatherCardsContainer}>
-              <WeatherCard/>
-              <WeatherCard/>
-              <WeatherCard/>
-              <WeatherCard/>
+            {weatherForecast && (
+              <>
+                {weatherForecast.map((data, index) => (
+                  <WeatherCard key={index} {...data} />
+                ))}
+              </>
+            )}
             </div>
           </div>
         </div>

@@ -1,10 +1,36 @@
 .CardBackground {
-    background-color: rgba(255, 255, 255, 0.5);
-    height: 20%;
-    width: 20%;
-    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 100%;
+    width: 100%;
+    padding: 5px;
     margin-bottom: 30px;
     margin: 10px;
     text-align: center;
     border-radius: 10px;
+}
+
+.day {
+    font-size: 30px;
+    font-weight: lighter;
+    margin: 0px;
+}
+
+.forecastInformation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.informationContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.informationTitle {
+    font-size: 15px;
+}
+
+.information {
+    margin: 0px;
+    padding: 5px;
 }

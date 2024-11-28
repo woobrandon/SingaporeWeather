@@ -37,7 +37,10 @@ def get_temperature():
     try:
         # Check if there is any data in the queue
         if not temperature_queue.empty():
-            processed_data = temperature_queue.get()
+            if temperature_queue.qsize() == 1:
+                processed_data = temperature_queue.queue[0]
+            else:
+                processed_data = temperature_queue.get()
             if hasattr(processed_data, "toPandas"):
                 result = processed_data.toPandas()
                 data = result.to_dict(orient='records')
@@ -55,7 +58,10 @@ def get_weather_forecast():
     try:
         # Check if there is any data in the queue
         if not weather_queue.empty():
-            processed_data = weather_queue.get()
+            if weather_queue.qsize() == 1:
+                processed_data = weather_queue.queue[0]
+            else:
+                processed_data = weather_queue.get()
             if hasattr(processed_data, "toPandas"):
                 result = processed_data.toPandas()
                 data = result.to_dict(orient='records')
