@@ -13,14 +13,20 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
-# Queue to store consumed messages
-message_queue = queue.Queue()
+temperature_queue = queue.Queue()
+weather_queue = queue.Queue()
 
 def background_consumer():
     logging.info("Consumer thread started.")
     for message in consumer.consume_message():
-        logging.info("Received message in consumer thread.")
-        message_queue.put(message)
+        if 'temperature' in message.columns:
+            temperature_queue.put(message)
+            logging.info("Queued message into temperature queue")
+        elif 'forecast_summary' in message.columns:
+            weather_queue.put(message)
+            logging.info("Queued message into weather forecast queue")
+        else:
+            logger.warning("Unknown message type received")
 
 # Start the consumer thread
 consumer_thread = threading.Thread(target=background_consumer, daemon=True)
@@ -30,8 +36,8 @@ consumer_thread.start()
 def get_temperature():
     try:
         # Check if there is any data in the queue
-        if not message_queue.empty():
-            processed_data = message_queue.get()
+        if not temperature_queue.empty():
+            processed_data = temperature_queue.get()
             if hasattr(processed_data, "toPandas"):
                 result = processed_data.toPandas()
                 data = result.to_dict(orient='records')
@@ -48,8 +54,8 @@ def get_temperature():
 def get_weather_forecast():
     try:
         # Check if there is any data in the queue
-        if not message_queue.empty():
-            processed_data = message_queue.get()
+        if not weather_queue.empty():
+            processed_data = weather_queue.get()
             if hasattr(processed_data, "toPandas"):
                 result = processed_data.toPandas()
                 data = result.to_dict(orient='records')

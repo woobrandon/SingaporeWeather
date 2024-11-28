@@ -28,9 +28,8 @@ def consume_message():
             topic = message.topic
             if topic == TOPIC_TEMPERATURE:
                 if "readings" in data and data["readings"]:
-                    timestamp = data["readings"][0].get("timestamp", "No Timestamp")
-                    logging.info(f"Received message: {timestamp}")
                     processed_data = stream_processing.process_temperature_stream(data)
+                    logging.info(f"Processed weather forecast data: {processed_data}")
                     yield processed_data
                 else:
                     logging.error(f"Invalid temperature data: {data}")
@@ -39,7 +38,8 @@ def consume_message():
                 if "records" in data and data["records"]:
                     processed_data = stream_processing.process_weather_forecast_stream(data)
                     logging.info(f"Processed weather forecast data: {processed_data}")
-                    # Further action on processed data, e.g., store in DB, trigger another process
+                    yield processed_data
+                    
                 else:
                     logging.error(f"Invalid weather forecast data: {data}")
     
