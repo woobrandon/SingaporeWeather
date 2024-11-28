@@ -22,7 +22,7 @@ def background_consumer():
         if 'temperature' in message.columns:
             temperature_queue.put(message)
             logging.info("Queued message into temperature queue")
-        elif 'forecast_summary' in message.columns:
+        elif 'forecast' in message.columns:
             weather_queue.put(message)
             logging.info("Queued message into weather forecast queue")
         else:

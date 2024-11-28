@@ -1,24 +1,47 @@
 .CardBackground {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(240, 248, 255, 0.3);
+    position: relative;
+    overflow: hidden;
     height: 100%;
     width: 100%;
-    padding: 5px;
+    padding-top: 5px;
     margin-bottom: 30px;
-    margin: 10px;
+    margin: 0px;
     text-align: center;
     border-radius: 10px;
+    z-index: 0;
+    color: white;
 }
+
+.backgroundGif {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5;
+  }
 
 .day {
     font-size: 30px;
-    font-weight: lighter;
+    font-weight: 400;
     margin: 0px;
+}
+
+.weather {
+    font-size: 12px;
+    margin-top: 0px;
 }
 
 .forecastInformation {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    height: 100%;
+    background-color: rgba(240, 248, 255, 0.3);
 }
 
 .informationContainer {
@@ -26,11 +49,35 @@
     flex-direction: column;
 }
 
-.informationTitle {
-    font-size: 15px;
+.imgContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+}
+
+.humidityLogo {
+    height: 70px !important;
+    width: auto !important;
+    opacity: 1;
+}
+
+.temperatureLogo {
+    height: 38% !important;
+    width: auto !important;
+    opacity: 4 !important;
+}
+
+.windLogo {
+    height: 38% !important;
+    width: auto !important;
+    opacity: 4 !important;
 }
 
 .information {
     margin: 0px;
     padding: 5px;
+    font-weight: bolder;
+    font-size: 16px;
 }

@@ -58,14 +58,13 @@ def process_weather_forecast_stream(data):
             "temperature_high": forecast["temperature"]["high"],
             "humidity_low": forecast["relativeHumidity"]["low"],
             "humidity_high": forecast["relativeHumidity"]["high"],
-            "forecast_summary": forecast["forecast"]["summary"],
+            "forecast": forecast["forecast"]["text"],
             "wind_speed_low": forecast["wind"]["speed"]["low"],
             "wind_speed_high": forecast["wind"]["speed"]["high"],
             "wind_direction": forecast["wind"]["direction"]
         }
         for forecast in forecasts
     ]
-
 
     forecasts_schema = StructType([
         StructField("day", StringType(), True),
@@ -74,7 +73,7 @@ def process_weather_forecast_stream(data):
         StructField("temperature_high", IntegerType(), True),
         StructField("humidity_low", IntegerType(), True),
         StructField("humidity_high", IntegerType(), True),
-        StructField("forecast_summary", StringType(), True),
+        StructField("forecast", StringType(), True),
         StructField("wind_speed_low", IntegerType(), True),
         StructField("wind_speed_high", IntegerType(), True),
         StructField("wind_direction", StringType(), True)

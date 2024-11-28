@@ -13,7 +13,7 @@ export interface ForecastData {
     temperature_high: number;
     humidity_low: number;
     humidity_high: number;
-    forecast_summary: string;
+    forecast: string;
     wind_speed_low: number;
     wind_speed_high: number;
     wind_direction: string;
