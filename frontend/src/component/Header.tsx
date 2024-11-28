@@ -6,6 +6,7 @@ import logo from "../assets/weather_logo.png"
 interface HeaderProps {
     className?: string;
 }
+
 const Header: React.FC<HeaderProps> = ({ className }) => {
     const navigate = useNavigate();
     const headerItems = [
