@@ -75,7 +75,7 @@ const Home = () => {
             {weatherForecast && (
               <>
                 {weatherForecast.map((data, index) => (
-                  <WeatherCard key={index} {...data} />
+                  <WeatherCard key={index} data = {data} />
                 ))}
               </>
             )}

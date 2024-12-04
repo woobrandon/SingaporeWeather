@@ -2,41 +2,54 @@ import React from "react";
 import { ForecastData } from "../interacesAndTypes"
 import styles from "./WeatherCard.module.css";
 import thunderstorm from "../assets/thunderstorm.gif";
+import cloudy from "../assets/cloudy.gif"
 import humidity from "../assets/humidity.png";
 import temperature from "../assets/temperature.png";
 import wind from "../assets/wind.png"
 
-const WeatherCard: React.FC<ForecastData> = ({ day, forecast_date, temperature_low, temperature_high, humidity_low, humidity_high, forecast, wind_speed_low, wind_speed_high, wind_direction }) => {
+const WeatherCard: React.FC<{ data: ForecastData }> = ({ data }) => {
+    const {
+        day,
+        forecast_date,
+        temperature_low,
+        temperature_high,
+        humidity_low,
+        humidity_high,
+        forecast,
+        wind_speed_low,
+        wind_speed_high,
+        wind_direction,
+      } = data;
 
-    const weatherTypes = [
-        "Fair",
-        "Fair (Day)",
-        "Fair (Night)",
-        "Fair and Warm",
-        "Partly Cloudy",
-        "Partly Cloudy (Day)",
-        "Partly Cloudy (Night)",
-        "Cloudy",
-        "Hazy",
-        "Slightly Hazy",
-        "Windy",
-        "Mist",
-        "Fog",
-        "Light Rain",
-        "Moderate Rain",
-        "Heavy Rain",
-        "Passing Showers",
-        "Light Showers",
-        "Showers",
-        "Heavy Showers",
-        "Thundery Showers",
-        "Heavy Thundery Showers",
-        "Heavy Thundery Showers with Gusty Winds"
-      ]
+    const weatherTypes: { [key: string]: string } = {
+        "Fair": thunderstorm,
+        "Fair (Day)": thunderstorm,
+        "Fair (Night)": thunderstorm,
+        "Fair and Warm": thunderstorm,
+        "Partly Cloudy": cloudy,
+        "Partly Cloudy (Day)": cloudy,
+        "Partly Cloudy (Night)": cloudy,
+        "Cloudy": cloudy,
+        "Hazy": thunderstorm,
+        "Slightly Hazy": thunderstorm,
+        "Windy": thunderstorm,
+        "Mist": thunderstorm,
+        "Fog": thunderstorm,
+        "Light Rain": thunderstorm,
+        "Moderate Rain": thunderstorm,
+        "Heavy Rain": thunderstorm,
+        "Passing Showers": thunderstorm,
+        "Light Showers": thunderstorm,
+        "Showers": thunderstorm,
+        "Heavy Showers": thunderstorm,
+        "Thundery Showers": thunderstorm,
+        "Heavy Thundery Showers": thunderstorm,
+        "Heavy Thundery Showers with Gusty Winds": thunderstorm
+    };
 
     return day ? (
         <div className = {styles.CardBackground}>
-            <img src = {thunderstorm} alt = "Background GIF" className = {styles.backgroundGif}/>
+            <img src = {weatherTypes[forecast]} alt = "Background GIF" className = {styles.backgroundGif}/>
             <p className = {styles.day}>{day}</p>
             <p className = {styles.weather}>{forecast}</p>
             <div className = {styles.forecastInformation}>
