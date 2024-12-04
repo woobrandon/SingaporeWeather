@@ -6,6 +6,8 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from scripts import consumer
 import logging
+import schedule
+import time
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -16,20 +18,35 @@ CORS(app)
 temperature_queue = queue.Queue()
 weather_queue = queue.Queue()
 
+def consume_message_periodically():
+    try:
+        # Run consume_message once every minute
+        schedule.every(1).minute.do(background_consumer)
+
+        while True:
+            schedule.run_pending()
+            time.sleep(1)  # Sleep for 1 second to avoid high CPU usage
+    except Exception as e:
+        logging.error(f"Error in scheduled message consumption: {e}")
+
 def background_consumer():
     logging.info("Consumer thread started.")
-    for message in consumer.consume_message():
-        if 'temperature' in message.columns:
-            temperature_queue.put(message)
-            logging.info("Queued message into temperature queue")
-        elif 'forecast' in message.columns:
-            weather_queue.put(message)
-            logging.info("Queued message into weather forecast queue")
-        else:
-            logger.warning("Unknown message type received")
+    try:
+        messages = consumer.consume_message()
+        for message in messages:
+            if 'temperature' in message.columns:
+                temperature_queue.put(message)
+                logging.info("Queued message into temperature queue")
+            elif 'forecast' in message.columns:
+                weather_queue.put(message)
+                logging.info("Queued message into weather forecast queue")
+            else:
+                logger.warning("Unknown message type received")
+    except Exception as e:
+        logging.error(f"Error consuming message: {e}")
 
 # Start the consumer thread
-consumer_thread = threading.Thread(target=background_consumer, daemon=True)
+consumer_thread = threading.Thread(target=consume_message_periodically, daemon=True)
 consumer_thread.start()
 
 @app.route('/temperature', methods=["GET"])

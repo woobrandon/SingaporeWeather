@@ -1,6 +1,7 @@
 from kafka import KafkaConsumer
 import json
 from scripts import stream_processing
+from scripts import data_ingestion
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -28,8 +29,10 @@ def consume_message():
             topic = message.topic
             if topic == TOPIC_TEMPERATURE:
                 if "readings" in data and data["readings"]:
-                    processed_data = stream_processing.process_temperature_stream(data)
+                    processed_data, temperatures, stations, timestamp = stream_processing.process_temperature_stream(data)
                     logging.info(f"Processed weather forecast data: {processed_data}")
+                    data_ingestion.insert_stations(stations)
+                    data_ingestion.insert_temperatures(temperatures, timestamp)
                     yield processed_data
                 else:
                     logging.error(f"Invalid temperature data: {data}")

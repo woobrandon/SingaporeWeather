@@ -50,7 +50,7 @@ const Home = () => {
 
     const temperatureInterval = setInterval(() => {
       fetchTemperatureData();
-    }, 60000);
+    }, 600);
 
     return () => clearInterval(temperatureInterval);
   }, []);

@@ -10,7 +10,7 @@ spark = SparkSession \
 def process_temperature_stream(data):
     stations = data["stations"]
     readings = data["readings"][0]
-
+    timestamp = readings["timestamp"]
     flatten_stations = [
         {
             "id": station["id"],
@@ -46,7 +46,7 @@ def process_temperature_stream(data):
 
     result_df = station_df.join(reading_df, on = "id", how = "inner")
     result_df.show()
-    return result_df
+    return result_df, reading_df, station_df, timestamp
 
 def process_weather_forecast_stream(data):
     forecasts = data["records"][0]["forecasts"]
