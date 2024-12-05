@@ -18,3 +18,13 @@ export interface ForecastData {
     wind_speed_high: number;
     wind_direction: string;
   }
+
+export interface Bar {
+  min_value: number;
+  min_data: number;
+  max_value: number;
+  max_data: number;
+  logo: string;
+  from_colour: string;
+  to_colour: string;
+}

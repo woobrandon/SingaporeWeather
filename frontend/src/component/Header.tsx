@@ -11,7 +11,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     const navigate = useNavigate();
     const headerItems = [
         { label: "Home", path: "/"},
-        { label: "Map", path: "/map"}
+        { label: "Map", path: "/map"},
+        { label: "Historical", path: "/historical"}
     ];
 
     const navigateTo = (path: string) => {

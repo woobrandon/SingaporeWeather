@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from "./Home.module.css";
 import Singapore from "../assets/SingaporeHome.jpg";
 import axios from "axios";
 import { Header, WeatherCard } from '../component';
-import { TemperatureData, ForecastData } from "../interacesAndTypes"
+import { TemperatureData, ForecastData } from "../InteracesAndTypes"
 
 const Home = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [meanTemperature, setMeanTemperature] = useState<string | null>(null);
   const [weatherForecast, setWeatherForecast] = useState<ForecastData[] | null>(null);
@@ -45,41 +46,54 @@ const Home = () => {
   };
 
   useEffect(() => {
-
     fetchTemperatureData();
 
     const temperatureInterval = setInterval(() => {
       fetchTemperatureData();
-    }, 600);
+    }, 60000);
 
     return () => clearInterval(temperatureInterval);
   }, []);
 
+  const handleScroll = (direction: number) => {
+    if (containerRef.current) {
+      const scrollAmount = 300;
+      containerRef.current.scrollLeft += direction * scrollAmount;
+    }
+  };
   
   return (
     <div className = {styles.background}>
         <Header className = {styles.header}/>
         <div className = {styles.body}>
           <div className = {styles.SingaporeMapContainer}>
-            <img src = {Singapore} alt = "Singapore"/>
-            <div className = {styles.imgTop}>
-              <h1 className = {styles.CountryName}>Singapore</h1>
-              <div className = {styles.weatherInformationContainer}>
-                <div className = {styles.meanTemperatureContainer}>
-                  <div className = {styles.meanTemperature}>{meanTemperature}</div>
-                  <div className = {styles.degreeLogo}>°C</div>
+            <div className = {styles.SingaporeMapWrapper}>
+              <img src = {Singapore} alt = "Singapore"/>
+              <div className = {styles.imgTop}>
+                <h1 className = {styles.CountryName}>Singapore Weather</h1>
+                <div className = {styles.weatherInformationContainer}>
                 </div>
               </div>
             </div>
-            <div className = {styles.WeatherCardsContainer}>
-            {weatherForecast && (
-              <>
-                {weatherForecast.map((data, index) => (
-                  <WeatherCard key={index} data = {data} />
-                ))}
-              </>
-            )}
+          </div>
+          <div className = {styles.rightBody}>
+            <p className = {styles.Today}>Today</p>
+            <div className = {styles.meanTemperatureContainer}>
+              <div className = {styles.meanTemperature}>{meanTemperature}</div>
+              <div className = {styles.degreeLogo}>°C</div>
             </div>
+            <button onClick={() => handleScroll(-1)}>Left</button>
+            <div ref = {containerRef} className = {styles.WeatherCardsContainer}>
+              {weatherForecast && (
+                  <>
+                  
+                    {weatherForecast.map((data, index) => (
+                      <WeatherCard key={index} data = {data} />
+                    ))}
+                  </>
+                )}
+            </div>
+            <button onClick={() => handleScroll(1)}>Right</button>
           </div>
         </div>
     </div>
